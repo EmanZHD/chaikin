@@ -1,27 +1,24 @@
-// use minifb::{Window, WindowOptions};
+use minifb::{ MouseButton, MouseMode, Window };
 
-// fn main() {
-//     let width = 640;
-//     let height = 480;
-//     let mut buffer: Vec<u32> = vec![0; width * height];
+pub fn draw_point(buffer: &mut [u32], width: usize, height: usize, x: usize, y: usize, color: u32) {
+    for dy in 0..3 {
+        for dx in 0..3 {
+            let px = x + dx - 1;
+            let py = y + dy - 1;
+            if px < width && py < height {
+                buffer[py * width + px] = color;
+            }
+        }
+    }
+}
 
-//     let mut window = Window::new(
-//         "Canvas in Rust - minifb",
-//         width,
-//         height,
-//         WindowOptions::default(),
-//     )
-//     .unwrap();
-
-//     while window.is_open() && !window.is_key_down(minifb::Key::Escape) {
-//         // Fill the buffer with a color gradient or any drawing
-//         for y in 0..height {
-//             for x in 0..width {
-//                 let color = ((x ^ y) * 0x010101) as u32;
-//                 buffer[y * width + x] = color;
-//             }
-//         }
-
-//         window.update_with_buffer(&buffer, width, height).unwrap();
-//     }
-// }
+pub fn detect_click(window: &mut Window, control_points: &mut Vec<(usize, usize)>) {
+    if let Some((mx, my)) = window.get_mouse_pos(MouseMode::Discard) {
+        if window.get_mouse_down(MouseButton::Left) {
+            let point = (mx as usize, my as usize);
+            if !control_points.contains(&point) {
+                control_points.push(point);
+            }
+        }
+    }
+}
