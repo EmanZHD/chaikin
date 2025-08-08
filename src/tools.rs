@@ -1,9 +1,9 @@
 use speedy2d::color::Color;
 use speedy2d::dimen::Vector2;
 use speedy2d::window::VirtualKeyCode;
-use speedy2d::window::{WindowHandler, WindowHelper};
-pub use speedy2d::{Graphics2D, Window};
-use std::time::{Duration, Instant};
+use speedy2d::window::{ WindowHandler, WindowHelper };
+pub use speedy2d::{ Graphics2D, Window };
+use std::time::{ Duration, Instant };
 
 // use crate::window::VirtualKeyCode;
 pub struct MyWindowHandler {
@@ -42,16 +42,12 @@ impl MyWindowHandler {
                         }
                         if i + 1 < self.points_temp.len() {
                             let r: Vector2<f32> = Vector2 {
-                                x: (0.25 * self.points_temp[i].x
-                                    + 0.75 * self.points_temp[i + 1].x),
-                                y: (0.25 * self.points_temp[i].y
-                                    + 0.75 * self.points_temp[i + 1].y),
+                                x: 0.25 * self.points_temp[i].x + 0.75 * self.points_temp[i + 1].x,
+                                y: 0.25 * self.points_temp[i].y + 0.75 * self.points_temp[i + 1].y,
                             };
                             let q: Vector2<f32> = Vector2 {
-                                x: (0.75 * self.points_temp[i].x
-                                    + 0.25 * self.points_temp[i + 1].x),
-                                y: (0.75 * self.points_temp[i].y
-                                    + 0.25 * self.points_temp[i + 1].y),
+                                x: 0.75 * self.points_temp[i].x + 0.25 * self.points_temp[i + 1].x,
+                                y: 0.75 * self.points_temp[i].y + 0.25 * self.points_temp[i + 1].y,
                             };
 
                             temp.push(q);
@@ -68,8 +64,10 @@ impl MyWindowHandler {
         }
     }
 }
-
+// WindowHandler is a trait from the speedy2d crate
 impl WindowHandler for MyWindowHandler {
+    // is automatically called every frame by the speedy2d engine — about 60 times per second.
+    //struct allows you to control the window — for example:  request_redraw() terminate_loop()
     fn on_draw(&mut self, _helper: &mut WindowHelper, graphics: &mut Graphics2D) {
         graphics.clear_screen(Color::BLACK);
         for p in &self.points {
@@ -88,9 +86,9 @@ impl WindowHandler for MyWindowHandler {
                             self.points_temp[i],
                             self.points_temp[i + 1],
                             2.0,
-                            Color::WHITE,
+                            Color::WHITE
                         );
-                        
+
                         //// REMOVE THIS TWO CIRCLES
                         graphics.draw_circle(self.points_temp[i], 2.0, Color::RED);
                         graphics.draw_circle(self.points_temp[i + 1], 2.0, Color::RED);
@@ -102,6 +100,7 @@ impl WindowHandler for MyWindowHandler {
                 }
             }
         }
+        //tells the system: “Please call on_draw again for the next frame.
         _helper.request_redraw();
     }
 
@@ -109,7 +108,7 @@ impl WindowHandler for MyWindowHandler {
         &mut self,
         helper: &mut WindowHelper<()>,
         virtual_key_code: Option<VirtualKeyCode>,
-        _scancode: speedy2d::window::KeyScancode,
+        _scancode: speedy2d::window::KeyScancode
     ) {
         if let Some(key) = virtual_key_code {
             match key {
@@ -137,7 +136,7 @@ impl WindowHandler for MyWindowHandler {
     fn on_mouse_button_down(
         &mut self,
         _helper: &mut WindowHelper<()>,
-        button: speedy2d::window::MouseButton,
+        button: speedy2d::window::MouseButton
     ) {
         if button == speedy2d::window::MouseButton::Left {
             if !self.is_draw {
