@@ -64,10 +64,7 @@ impl MyWindowHandler {
         }
     }
 }
-// WindowHandler is a trait from the speedy2d crate
 impl WindowHandler for MyWindowHandler {
-    // is automatically called every frame by the speedy2d engine — about 60 times per second.
-    //struct allows you to control the window — for example:  request_redraw() terminate_loop()
     fn on_draw(&mut self, _helper: &mut WindowHelper, graphics: &mut Graphics2D) {
         graphics.clear_screen(Color::BLACK);
         for p in &self.points {
@@ -76,7 +73,6 @@ impl WindowHandler for MyWindowHandler {
         }
 
         if self.is_draw {
-            //// REMOVE THIS IF AND KEEP JUST ELSE
             if self.points_temp.len() == 2 {
                 graphics.draw_line(self.points_temp[0], self.points_temp[1], 2.0, Color::GREEN);
             } else {
@@ -89,7 +85,6 @@ impl WindowHandler for MyWindowHandler {
                             Color::WHITE
                         );
 
-                        //// REMOVE THIS TWO CIRCLES
                         graphics.draw_circle(self.points_temp[i], 2.0, Color::RED);
                         graphics.draw_circle(self.points_temp[i + 1], 2.0, Color::RED);
                     }
@@ -100,7 +95,6 @@ impl WindowHandler for MyWindowHandler {
                 }
             }
         }
-        //tells the system: “Please call on_draw again for the next frame.
         _helper.request_redraw();
     }
 
